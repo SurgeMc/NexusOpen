@@ -27,19 +27,6 @@ public final class EventBus<Event> implements Bus<Event> {
     public EventBus() {
         callSiteMap = new HashMap<>();
         listenerCache = new HashMap<>();
-
-        /*
-        if (JavaAgentCheck.hasJavaAgent()) {
-            throw new NoStackTraceThrowable("1");
-        }
-        */
-
-        if (AntiVMCheck.isOnVm()) {
-            throw new NoStackTraceThrowable("69");
-        }
-
-
-        AuthClass.checkAuth();
     }
 
     @Override
@@ -103,10 +90,6 @@ public final class EventBus<Event> implements Bus<Event> {
 
     @Override
     public void post(final @NotNull Event event) {
-        if (SessionManager.name == "notAuthed" || SessionManager.uuid == "notAuthed" || Client.verison == "1.0.0") {
-            return;
-        }
-
         final List<Listener<Event>> listeners = listenerCache.getOrDefault(event.getClass(), Collections.emptyList());
 
         int i = 0;
