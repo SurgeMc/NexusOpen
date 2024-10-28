@@ -33,11 +33,6 @@ public final class Client {
     public static String verison = "1.0.0";
 
     public Client() {
-        try {
-            FakeAuthClass.checkAuth();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
         INSTANCE = this;
         mc = MinecraftClient.getInstance();
