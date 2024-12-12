@@ -24,6 +24,7 @@ public class Speed extends Module {
     public final NewModeSetting speedMode = new NewModeSetting("Speed Mode", "Vanilla",
             new VanillaSpeed("Vanilla", this),
             new StrafeSpeed("Strafe", this),
+            new LegitSpeed("Legit", this),
             new WatchdogSpeed("Watchdog", this),
             new TestSpeed("Test", this),
             new VulcanSpeed("Vulcan", this),

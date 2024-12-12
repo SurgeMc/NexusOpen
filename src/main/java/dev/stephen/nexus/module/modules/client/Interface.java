@@ -30,7 +30,7 @@ import static dev.stephen.nexus.utils.render.ThemeUtils.getThemeColor;
 public class Interface extends Module {
     public static final BooleanSetting watermark = new BooleanSetting("Watermark", true);
     public static final ModeSetting watermarkMode = new ModeSetting("Watermark Mode", "Simple", "Simple", "Gamesense");
-    public static final StringSetting watermarkText = new StringSetting("Watermark Text", "Nexus");
+    public static final StringSetting watermarkText = new StringSetting("Watermark Text", "Lag");
     public static final ModeSetting watermarkSimpleFontMode = new ModeSetting("Watermark Font", "MC", "MC", "Product Sans Regular", "Product Sans Medium", "Product Sans Bold", "Verdana", "SFUI");
     public static final BooleanSetting arrayList = new BooleanSetting("ArrayList", true);
     public static final ModeSetting colorMode = new ModeSetting("Color Mode", "Astolfo", "Astolfo", "Theme");
@@ -100,7 +100,7 @@ public class Interface extends Module {
                     break;
 
                 case "Gamesense":
-                    String text = "§f" + watermarkText.getValue() + "§rsense §8| §f " + ("free") + "§7 (" + ("0000") + ") §8 | §f " + getIP();
+                    String text = "§f" + watermarkText.getValue() + "§rsense §8| §f " + ("Dev") + "§7 (" + ("0001") + ") §8 | §f " + getIP();
                     int padding = 2;
                     int offsetX = 4;
                     int offsetY = 4;
