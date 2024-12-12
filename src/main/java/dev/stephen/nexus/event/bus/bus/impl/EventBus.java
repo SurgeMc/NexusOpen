@@ -4,11 +4,6 @@ import dev.stephen.nexus.Client;
 import dev.stephen.nexus.event.bus.Listener;
 import dev.stephen.nexus.event.bus.annotations.EventLink;
 import dev.stephen.nexus.event.bus.bus.Bus;
-import dev.stephen.nexus.utils.auth.real.AuthClass;
-import dev.stephen.nexus.utils.auth.real.SessionManager;
-import dev.stephen.nexus.utils.auth.real.checks.AntiVMCheck;
-import dev.stephen.nexus.utils.auth.real.checks.JavaAgentCheck;
-import dev.stephen.nexus.utils.auth.real.crash.NoStackTraceThrowable;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.invoke.MethodHandles;

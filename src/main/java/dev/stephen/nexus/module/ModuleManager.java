@@ -70,6 +70,7 @@ public final class ModuleManager {
         // CLIENT
         add(new ClickGUI());
         add(new Interface());
+        add(new CrackedName());
         add(new Notifications());
         add(new PostProcessing());
         add(new TargetHUD());

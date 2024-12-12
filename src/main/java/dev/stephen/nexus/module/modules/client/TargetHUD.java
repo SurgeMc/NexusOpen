@@ -26,7 +26,7 @@ import java.awt.*;
 import java.text.DecimalFormat;
 
 public class TargetHUD extends Module {
-    public static final ModeSetting targethudmode = new ModeSetting("TargetHUD Mode", "Nexus", "Nexus", "Adjust", "Novo");
+    public static final ModeSetting targethudmode = new ModeSetting("TargetHUD Mode", "Nexus", "Nexus", "Adjust", "Novo","Modern");
 
     public static final BooleanSetting deb = new BooleanSetting("Debug", false);
 
@@ -74,8 +74,64 @@ public class TargetHUD extends Module {
             case "Nexus" -> drawNexusTargetHud(event);
             case "Adjust" -> drawAdjustTargetHud(event);
             case "Novo" -> drawNovolineTargetHud(event);
+            case "Modern" -> drawModernTargetHud(event);
         }
     };
+
+    private void drawModernTargetHud(EventRender2D event) {
+        int height = event.getHeight();
+        int width = event.getWidth();
+
+        int startX = width / 2 + 15;
+        int startY = height / 2 + 15;
+
+        String name = target.getGameProfile().getName();
+        String healthText = decimalFormat.format(target.getHealth()) + " HP" + " | " + getW_L();
+
+        FontRenderer fontRenderer = Client.INSTANCE.getFontManager().getSize(10, FontManager.Type.VERDANA);
+
+        int nameWidth = (int) fontRenderer.getStringWidth(name);
+        int healthWidth = (int) fontRenderer.getStringWidth(healthText);
+        int maxxL = Math.max(nameWidth, healthWidth);
+
+        float lineHeight = fontRenderer.getStringHeight("A");
+
+        if (PostProcessing.shouldBlurTargetHud()) {
+            ShaderUtils.drawGlow(event.getContext().getMatrices(), startX, startY, 3 + 32 + 3 + maxxL, 3 + 32 + 3, 30, new Color(opacity.getValueInt(), opacity.getValueInt(), opacity.getValueInt()));
+        }
+
+        DrawUtils.drawRoundedRect(event.getContext().getMatrices(), startX, startY,
+                startX + 3 + 32 + 3 + maxxL + 3, startY + 3 + 32 + 3,
+                3, new Color(43, 43, 43, opacity.getValueInt()));
+
+        PlayerSkinDrawer.draw(event.getContext(), ((AbstractClientPlayerEntity) target).getSkinTextures(), startX + 3, startY + 3, 32);
+
+        fontRenderer.drawString(event.getContext().getMatrices(), name,
+                startX + 3 + 32 + 3, startY + 3, Color.WHITE);
+
+        fontRenderer.drawString(event.getContext().getMatrices(), healthText,
+                startX + 3 + 32 + 3, startY + 3 + lineHeight + 2, Color.WHITE);
+
+        int healthbarstartx = startX + 3 + 32 + 3;
+        int healthbarstarty = (int) (startY + 3 + 2 * lineHeight + 3);
+        int healthbarendx = startX + 3 + 32 + 3 + maxxL;
+        int healthbarendy = startY + 3 + 32;
+
+
+        DrawUtils.drawRoundedRect(event.getContext().getMatrices(), healthbarstartx, healthbarstarty, healthbarendx, healthbarendy, 3, new Color(0, 0, 0, 80));
+
+        double healthN = target.getHealth();
+        double maxHealth = target.getMaxHealth();
+        double healthPercentage = healthN / maxHealth;
+
+        int filledHealthbarEndX = (int) (healthbarstartx + (healthbarendx - healthbarstartx) * healthPercentage);
+        filledHealthbarEndX = Math.clamp(filledHealthbarEndX, healthbarstartx, healthbarendx);
+
+        healthBarAnimation.interpolate(filledHealthbarEndX);
+
+
+        DrawUtils.drawRoundedHorizontalGradientRect(event.getContext().getMatrices(), healthbarstartx, healthbarstarty, (int) healthBarAnimation.getValue(), healthbarendy, 3, ThemeUtils.getMainColor(), ThemeUtils.getSecondColor());
+    }
 
     private void drawNovolineTargetHud(EventRender2D event) {
         int height = event.getHeight();

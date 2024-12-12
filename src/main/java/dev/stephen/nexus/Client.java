@@ -5,7 +5,6 @@ import dev.stephen.nexus.commands.CommandManager;
 import dev.stephen.nexus.config.ConfigManager;
 import dev.stephen.nexus.event.EventManager;
 import dev.stephen.nexus.module.ModuleManager;
-import dev.stephen.nexus.utils.auth.fake.FakeAuthClass;
 import dev.stephen.nexus.utils.font.FontManager;
 import dev.stephen.nexus.utils.mc.DelayUtil;
 import dev.stephen.nexus.utils.render.notifications.NotificationManager;
