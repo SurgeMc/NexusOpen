@@ -191,7 +191,7 @@ public class ConfigManager {
     }
 
     public void loadCloudConfig(String configName) {
-        final String urlString = "https://raw.githubusercontent.com/StephenIsTaken/Nexus-CloudAPI/main/configs/" + configName + ".json";
+        final String urlString = "https://raw.githubusercontent.com/SurgeMc/Cloud/main/configs/" + configName + ".json";
 
         try {
             URL url = new URL(urlString);
@@ -284,22 +284,30 @@ public class ConfigManager {
 
     public String getCloudConfigList() {
         try {
-            URL url = new URL("https://raw.githubusercontent.com/StephenIsTaken/Nexus-CloudAPI/main/configs/configs.txt");
+            URL url = new URL("https://raw.githubusercontent.com/SurgeMc/Cloud/refs/heads/main/configs.txt");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                System.err.println("Failed:" + responseCode);
+                return "Error";
+            }
+
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+                response.append(inputLine).append("\n");
             }
             in.close();
-            return response.toString();
+            return response.toString().trim();
         } catch (Exception e) {
             e.printStackTrace();
             return "Error";
         }
     }
+
 
     public void resetConfig() {
         for (Module module : moduleManager.getModules()) {
