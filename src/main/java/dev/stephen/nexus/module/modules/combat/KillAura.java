@@ -65,7 +65,7 @@ public class KillAura extends Module {
     public static final RangeSetting attackSpeed = new RangeSetting("CPS", 0, 25, 10, 12, 0.1);
     public static final BooleanSetting dropCps = new BooleanSetting("Drop CPS", false);
     public static final BooleanSetting dontAttackWhileBlocking = new BooleanSetting("Dont attack while blocking", false);
-    public static final ModeSetting autoBlockMode = new ModeSetting("AutoBlock", "Off", "Off", "Vanilla", "Interact", "Reblock", "Watchdog", "NCP", "Legit");
+    public static final ModeSetting autoBlockMode = new ModeSetting("AutoBlock", "Off", "Off", "Vanilla", "Interact", "Reblock", "Watchdog", "NCP", "Legit","Grim");
     public static final BooleanSetting renderFakeAnim = new BooleanSetting("Fake autoblock", false);
     public static final BooleanSetting attackTeamMates = new BooleanSetting("Attack team mates", false);
     public static final BooleanSetting perfectHit = new BooleanSetting("Perfect Hit", false);
@@ -369,6 +369,17 @@ public class KillAura extends Module {
                     unblock();
                 }
                 break;
+            case "Grim":
+                int currentSlot = mc.player.getInventory().selectedSlot;
+                int newSlot = (currentSlot + 1) % 9;
+
+                PacketUtils.sendPacket(new UpdateSelectedSlotC2SPacket(newSlot));
+
+                PacketUtils.sendPacket(new UpdateSelectedSlotC2SPacket(currentSlot));
+
+                this.unblock();
+                visualBlocking = true;
+                break;
 
             case "Legit":
                 if (justAttacked && mc.player.distanceTo(target) > 2.5 && attacks >= 6) {
@@ -412,6 +423,8 @@ public class KillAura extends Module {
                 mc.interactionManager.interactItem(mc.player, mc.player.getActiveHand());
                 blocking = true;
                 break;
+            case "Grim":
+                break;
         }
     }
 
@@ -431,6 +444,8 @@ public class KillAura extends Module {
             case "NCP":
                 PacketUtils.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, Direction.DOWN));
                 mc.options.useKey.setPressed(false);
+                break;
+            case "Grim":
                 break;
         }
 
