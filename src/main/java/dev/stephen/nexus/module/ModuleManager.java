@@ -8,6 +8,7 @@ import dev.stephen.nexus.module.modules.movement.*;
 import dev.stephen.nexus.module.modules.other.*;
 import dev.stephen.nexus.module.modules.other.Timer;
 import dev.stephen.nexus.module.modules.player.*;
+import dev.stephen.nexus.module.modules.player.CrackedName;
 import dev.stephen.nexus.module.modules.render.*;
 import lombok.Getter;
 
@@ -71,6 +72,7 @@ public final class ModuleManager {
         add(new ClickGUI());
         add(new Interface());
         add(new CrackedName());
+        add(new Sessionauth());
         add(new Notifications());
         add(new PostProcessing());
         add(new TargetHUD());
