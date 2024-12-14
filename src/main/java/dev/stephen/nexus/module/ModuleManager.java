@@ -79,6 +79,7 @@ public final class ModuleManager {
         add(new Theme());
         add(new RefreshClientData());
 
+
         // COMBAT
         add(new AntiBot());
         add(new Backtrack());

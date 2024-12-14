@@ -26,10 +26,8 @@ import java.awt.*;
 import java.text.DecimalFormat;
 
 public class TargetHUD extends Module {
-    public static final ModeSetting targethudmode = new ModeSetting("TargetHUD Mode", "Nexus", "Nexus", "Adjust", "Novo","Modern");
-
+    public static final ModeSetting targethudmode = new ModeSetting("TargetHUD Mode", "Nexus", "Nexus", "Adjust", "Novo","Modern","Other");
     public static final BooleanSetting deb = new BooleanSetting("Debug", false);
-
     public static final NumberSetting opacity = new NumberSetting("BG Opacity", 0, 255, 80, 1);
 
     public TargetHUD() {
@@ -75,8 +73,61 @@ public class TargetHUD extends Module {
             case "Adjust" -> drawAdjustTargetHud(event);
             case "Novo" -> drawNovolineTargetHud(event);
             case "Modern" -> drawModernTargetHud(event);
+            case "Other" -> drawOtherTargetHud(event);
         }
     };
+
+    private void drawOtherTargetHud(EventRender2D event) {
+        int height = event.getHeight();
+        int width = event.getWidth();
+        int startX = width / 2 + 20;
+        int startY = height / 2 + 20;
+
+        String name = target.getGameProfile().getName();
+        String hp = decimalFormat.format(target.getHealth()) + " HP";
+        // REMOVE DIS THIS
+        int iconSize = 32;
+        int iconPadding = 4;
+        int verticalPadding = 5;
+        int textPadding = 10;
+        int lineSpacing = 5;
+        int barSpacing = 10;
+
+        int nameWidth = mc.textRenderer.getWidth(name);
+        int hpWidth = mc.textRenderer.getWidth(hp);
+        int maxW = Math.max(nameWidth, hpWidth) + 6;
+
+        DrawUtils.drawRect(event.getContext().getMatrices(), startX, startY, startX + iconSize + textPadding + maxW, startY + 40, new Color(20, 20, 20, opacity.getValueInt()));
+        DrawUtils.drawRect(event.getContext().getMatrices(), startX, startY, startX + 2, startY + 40, ThemeUtils.getMainColor());
+
+        PlayerSkinDrawer.draw(event.getContext(), ((AbstractClientPlayerEntity) target).getSkinTextures(), startX + iconPadding, startY + iconPadding, iconSize);
+
+        int textStartX = startX + iconPadding + iconSize + textPadding;
+        int textStartY = startY + verticalPadding;
+
+        event.getContext().drawText(mc.textRenderer, name, textStartX, textStartY, Color.WHITE.getRGB(), false);
+        event.getContext().drawText(mc.textRenderer, hp, textStartX, textStartY + mc.textRenderer.fontHeight + lineSpacing, Color.WHITE.getRGB(), false);
+
+
+        int barStartX = textStartX;
+        int barStartY = textStartY + (2 * mc.textRenderer.fontHeight) + barSpacing;
+        int barEndX = textStartX + maxW - 6;
+        int barEndY = barStartY + 5;
+
+        DrawUtils.drawRect(event.getContext().getMatrices(), barStartX, barStartY, barEndX, barEndY, new Color(0,0,0,80));
+
+        double healthN = target.getHealth();
+        double maxHealth = target.getMaxHealth();
+        double healthPerc = healthN / maxHealth;
+        int finalBar = (int)(barStartX + (barEndX - barStartX) * healthPerc);
+
+        healthBarAnimation.interpolate(finalBar);
+        DrawUtils.drawRect(event.getContext().getMatrices(), barStartX, barStartY, (int)healthBarAnimation.getValue(), barEndY, ThemeUtils.getMainColor());
+    }
+
+
+
+
 
     private void drawModernTargetHud(EventRender2D event) {
         int height = event.getHeight();
@@ -303,16 +354,11 @@ public class TargetHUD extends Module {
         for (int i = 0; i < 4; i++) {
             if (!target.getInventory().armor.get(3 - i).isEmpty()) {
                 context.getMatrices().push();
-
                 context.getMatrices().translate(currentX, posY, 0);
-
                 context.getMatrices().scale(scale, scale, scale);
-
                 context.drawItem(target.getInventory().armor.get(3 - i), 0, 0);
                 context.drawItemInSlot(mc.textRenderer, target.getInventory().armor.get(3 - i), 0, 0);
-
                 context.getMatrices().pop();
-
                 currentX += spacing;
             }
         }
