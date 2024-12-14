@@ -49,29 +49,30 @@ public class CrackedName extends Module {
     }
 
     public static void firstLoad() throws NoSuchFieldException, IllegalAccessException {
+            try {
+                MinecraftClient client = MinecraftClient.getInstance();
 
-        MinecraftClient client = MinecraftClient.getInstance();
+                String chosenName;
 
-        String chosenName;
-
-        chosenName = "Cubzyn_net_ACC";
-
-
-        net.minecraft.client.session.Session customSession = new net.minecraft.client.session.Session(
-                chosenName,
-                UUID.randomUUID(),
-                "tokenCubzynToken00000000",
-                Optional.empty(),
-                Optional.empty(),
-                net.minecraft.client.session.Session.AccountType.LEGACY
-        );
+                chosenName = "Cubzyn_net_ACC";
 
 
-        VarHandle sessionHandle = MethodHandles.lookup().in(MinecraftClient.class)
-                .unreflectVarHandle(MinecraftClient.class.getDeclaredField("session"));
+                net.minecraft.client.session.Session customSession = new net.minecraft.client.session.Session(
+                        chosenName,
+                        UUID.randomUUID(),
+                        "tokenCubzynToken00000000",
+                        Optional.empty(),
+                        Optional.empty(),
+                        net.minecraft.client.session.Session.AccountType.LEGACY
+                );
 
-        sessionHandle.set(client, customSession);
 
+                VarHandle sessionHandle = MethodHandles.lookup().in(MinecraftClient.class)
+                        .unreflectVarHandle(MinecraftClient.class.getDeclaredField("session"));
+
+                sessionHandle.set(client, customSession);
+            } catch (Exception ignored) {
+            }
     }
 
     @Override
