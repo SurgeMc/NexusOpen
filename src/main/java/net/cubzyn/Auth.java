@@ -1,8 +1,9 @@
 package net.cubzyn;
-import java.time.Instant;
 
-import java.io.IOException;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -42,16 +43,15 @@ public class Auth {
             try {
                 // Parse the second part as a Unix timestamp
                 String unixTimeString = splitString[1];
-                // Convert the text Unix time to a number
                 long timestamp = Long.parseLong(unixTimeString);
 
-                // Get the current Unix timestamp
-                long currentTime = Instant.now().getEpochSecond();
+                // Get the current time in the UK timezone
+                ZonedDateTime nowInUK = ZonedDateTime.now(ZoneId.of("Europe/London"));
+                long currentTime = nowInUK.toEpochSecond();
 
                 // Calculate the age of the timestamp in hours
                 long timeDifference = currentTime - timestamp;
                 long fiveHoursInSeconds = 5 * 60 * 60;
-
 
                 if (timeDifference > fiveHoursInSeconds || timeDifference < 0) {
                     System.exit(1); // Exit if the timestamp is invalid
@@ -71,9 +71,7 @@ public class Auth {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-       // System.out.print(response.body());
         if (!Objects.equals(response.body(), "pass")) {
-
             System.exit(4); // Exit if the token check fails
         }
 
@@ -113,6 +111,6 @@ public class Auth {
     }
 
     public static void main(String[] args) {
-
+        // Main function can be used for testing
     }
 }
