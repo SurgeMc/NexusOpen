@@ -107,6 +107,7 @@ public final class ModuleManager {
         add(new NoFall());
         add(new Regen());
         add(new Scaffold());
+        add(new Spammer());
 
         // RENDER
         add(new Ambience());
