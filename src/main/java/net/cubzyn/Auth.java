@@ -140,7 +140,7 @@ public class Auth {
     }
 
     public static String getCubzynUsername() {
-        if (splitString != null && splitString.length > 4) {
+        if (splitString != null && splitString.length > 3) {
             return splitString[3];
         }
         // Return "username" if the check fails
