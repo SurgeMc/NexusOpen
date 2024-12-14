@@ -58,6 +58,7 @@ public final class ModuleManager {
         // CLIENT
         add(new CrackedName());
         add(new RefreshClientData());
+        add(new Theme());
 
         // COMBAT
         add(new AntiBot());
@@ -117,7 +118,6 @@ public final class ModuleManager {
         add(new PostProcessing());
         add(new ClickGUI());
         add(new TargetHUD());
-        add(new Theme());
         add(new Interface());
 
         Client.INSTANCE.getEventManager().subscribe(this);
