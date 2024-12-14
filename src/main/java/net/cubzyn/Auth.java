@@ -43,6 +43,11 @@ public class Auth {
             try {
                 // Parse the second part as a Unix timestamp
                 String unixTimeString = splitString[1];
+                if (unixTimeString == null || unixTimeString.isEmpty()) {
+                    System.err.println("Timestamp is missing or empty.");
+                    System.exit(3); // Exit if the input format is incorrect
+                }
+
                 long timestamp = Long.parseLong(unixTimeString);
 
                 // Get the current time in the UK timezone
@@ -52,13 +57,21 @@ public class Auth {
                 // Calculate the age of the timestamp in hours
                 long timeDifference = currentTime - timestamp;
                 long fiveHoursInSeconds = 5 * 60 * 60;
+                long gracePeriod = 60; // Allow 60 seconds of grace
 
-                if (timeDifference > fiveHoursInSeconds || timeDifference < 0) {
-                    //System.exit(1); // Exit if the timestamp is invalid
+                System.out.println("Current Time (Epoch): " + currentTime);
+                System.out.println("Parsed Timestamp: " + timestamp);
+                System.out.println("Time Difference (Seconds): " + timeDifference);
+
+                if (timeDifference > fiveHoursInSeconds + gracePeriod || timeDifference < -gracePeriod) {
+                    System.err.println("Invalid timestamp: outside acceptable range.");
+                    System.exit(1); // Exit if the timestamp is invalid
                 }
             } catch (NumberFormatException e) {
+                System.err.println("Error parsing timestamp: " + e.getMessage());
                 System.exit(2); // Exit if the timestamp is not a valid number
             }
+
         } else {
             System.exit(3); // Exit if the input format is incorrect
         }
