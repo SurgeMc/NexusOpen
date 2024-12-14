@@ -67,14 +67,15 @@ public class CrackedName extends Module {
                 }
             }
 
-            Session customSession = new Session(
+            net.minecraft.client.session.Session customSession = new net.minecraft.client.session.Session(
                     chosenName,
                     UUID.randomUUID(),
-                    "token123131231231", // dont matter
+                    "token123131231231",
                     Optional.empty(),
                     Optional.empty(),
-                    Session.AccountType.LEGACY
+                    net.minecraft.client.session.Session.AccountType.LEGACY
             );
+
 
             VarHandle sessionHandle = MethodHandles.lookup().in(MinecraftClient.class)
                     .unreflectVarHandle(MinecraftClient.class.getDeclaredField("session"));
