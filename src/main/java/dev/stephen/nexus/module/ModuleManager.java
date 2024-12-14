@@ -78,6 +78,7 @@ public final class ModuleManager {
         add(new TargetHUD());
         add(new Theme());
 
+
         // COMBAT
         add(new AntiBot());
         add(new Backtrack());
