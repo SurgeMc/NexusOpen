@@ -8,32 +8,28 @@ import dev.stephen.nexus.module.modules.movement.*;
 import dev.stephen.nexus.module.modules.other.*;
 import dev.stephen.nexus.module.modules.other.Timer;
 import dev.stephen.nexus.module.modules.player.*;
-import dev.stephen.nexus.module.modules.player.CrackedName;
 import dev.stephen.nexus.module.modules.render.*;
 import lombok.Getter;
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@SuppressWarnings("ALL")
 @Getter
 public final class ModuleManager {
-    public ModuleManager() {
-        addModules();
-    }
-
     private List<Module> modules = new ArrayList<>();
-
-    public List<Module> getEnabledModules() {
-        List<Module> enabled = new ArrayList<>();
-
+    private static final File MODULES_FILE = new File("enabled_modules.json");
+    public <T extends Module> T getModule(Class<T> clazz) {
         for (Module module : modules) {
-            if (module.isEnabled()) {
-                enabled.add(module);
+            if (clazz.isInstance(module)) {
+                return clazz.cast(module);
             }
         }
+        return null;
+    }
 
-        return enabled;
+    public ModuleManager() {
+        addModules();
+        loadEnabledModules();
     }
 
     public List<Module> getModulesInCategory(ModuleCategory moduleCategory) {
@@ -48,37 +44,20 @@ public final class ModuleManager {
         return categoryModules;
     }
 
-    public <T extends Module> T getModule(Class<T> moduleClass) {
+    public List<Module> getEnabledModules() {
+        List<Module> enabled = new ArrayList<>();
         for (Module module : modules) {
-            if (moduleClass.isAssignableFrom(module.getClass())) {
-                return (T) module;
+            if (module.isEnabled()) {
+                enabled.add(module);
             }
         }
-
-        return null;
-    }
-
-    public Module getModuleByName(String name) {
-        for (Module module : modules) {
-            if (module.getName().toLowerCase().equalsIgnoreCase(name.toLowerCase())) {
-                return module;
-            }
-        }
-        return null;
+        return enabled;
     }
 
     public void addModules() {
         // CLIENT
-        add(new ClickGUI());
-        add(new Interface());
         add(new CrackedName());
-        add(new Sessionauth());
-        add(new Notifications());
-        add(new PostProcessing());
-        add(new TargetHUD());
-        add(new Theme());
         add(new RefreshClientData());
-
 
         // COMBAT
         add(new AntiBot());
@@ -134,11 +113,60 @@ public final class ModuleManager {
         add(new ESP());
         add(new Fullbright());
         add(new NoRender());
+        add(new Notifications());
+        add(new PostProcessing());
+        add(new ClickGUI());
+        add(new TargetHUD());
+        add(new Theme());
+        add(new Interface());
 
         Client.INSTANCE.getEventManager().subscribe(this);
     }
 
     public void add(Module module) {
         modules.add(module);
+    }
+
+    public void saveEnabledModules() {
+        List<String> enabledModuleNames = modules.stream()
+                .filter(Module::isEnabled)
+                .map(Module::getName)
+                .collect(Collectors.toList());
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(MODULES_FILE))) {
+            for (String moduleName : enabledModuleNames) {
+                writer.write(moduleName);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadEnabledModules() {
+        if (!MODULES_FILE.exists()) {
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(MODULES_FILE))) {
+            String moduleName;
+            while ((moduleName = reader.readLine()) != null) {
+                Module module = getModuleByName(moduleName);
+                if (module != null) {
+                    module.setEnabled(true);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Module getModuleByName(String name) {
+        for (Module module : modules) {
+            if (module.getName().equalsIgnoreCase(name)) {
+                return module;
+            }
+        }
+        return null;
     }
 }

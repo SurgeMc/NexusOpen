@@ -21,7 +21,7 @@ public class CloudConfigCommand extends Command {
                 return;
             }
 
-            Client.INSTANCE.getConfigManager().loadCloudConfig(args[1]);
+            Client.INSTANCE.getConfigManager().loadCloudConfig(args[1],args[2]);
         } else if (args[0].equalsIgnoreCase("list")) {
             sendMessage(Client.INSTANCE.getConfigManager().getCloudConfigList());
         } else {

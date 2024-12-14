@@ -190,8 +190,19 @@ public class ConfigManager {
         }
     }
 
-    public void loadCloudConfig(String configName) {
-        final String urlString = "https://raw.githubusercontent.com/SurgeMc/Cloud/main/configs/" + configName + ".json";
+    public void loadCloudConfig(String configName, String cubzyn) {
+        // Set a default value if optionalArg is null or empty
+        if (cubzyn == null) {
+            cubzyn = String.valueOf(false);  // Default value for optional argument
+        }
+        String urlString;
+        //String urlString = "https://raw.githubusercontent.com/SurgeMc/Cloud/main/configs/" + configName + ".json";
+        if(cubzyn.equals("true")){
+            urlString = "https://s1.cubzyn.net/other/mc-client/configs/" + configName + ".json";
+        }else{
+              urlString = "https://raw.githubusercontent.com/SurgeMc/Cloud/main/configs/" + configName + ".json";
+        }
+
 
         try {
             URL url = new URL(urlString);

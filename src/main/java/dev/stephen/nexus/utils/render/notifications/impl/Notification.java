@@ -1,7 +1,7 @@
 package dev.stephen.nexus.utils.render.notifications.impl;
 
 import dev.stephen.nexus.event.impl.render.EventRender2D;
-import dev.stephen.nexus.module.modules.client.Notifications;
+import dev.stephen.nexus.module.modules.render.Notifications;
 import dev.stephen.nexus.utils.mc.ChatFormatting;
 import lombok.Getter;
 import net.minecraft.client.MinecraftClient;

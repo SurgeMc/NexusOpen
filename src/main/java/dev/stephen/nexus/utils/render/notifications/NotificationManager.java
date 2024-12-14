@@ -5,7 +5,7 @@ import dev.stephen.nexus.event.bus.Listener;
 import dev.stephen.nexus.event.bus.annotations.EventLink;
 import dev.stephen.nexus.event.impl.player.EventTickPre;
 import dev.stephen.nexus.event.impl.render.EventRender2D;
-import dev.stephen.nexus.module.modules.client.Notifications;
+import dev.stephen.nexus.module.modules.render.Notifications;
 import dev.stephen.nexus.utils.Utils;
 import dev.stephen.nexus.utils.render.notifications.impl.Notification;
 

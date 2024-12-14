@@ -1,4 +1,4 @@
-package dev.stephen.nexus.module.modules.player;
+package dev.stephen.nexus.module.modules.client;
 
 import dev.stephen.nexus.Client;
 import dev.stephen.nexus.event.bus.Listener;
@@ -38,7 +38,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class CrackedName extends Module {
-    public static final StringSetting usernameSetting = new StringSetting("Username", "cracked");
+    public static final StringSetting usernameSetting = new StringSetting("Username", "Cubzyn_net_ACC");
     public static final BooleanSetting randomUsernameSetting = new BooleanSetting("Random Username", false); // new thigny
 
     private net.minecraft.client.session.Session oldSession;
@@ -46,6 +46,32 @@ public class CrackedName extends Module {
     public CrackedName() {
         super("Session Changer", "Changes displayed name to the one you typed", 0, ModuleCategory.CLIENT);
         addSettings(usernameSetting, randomUsernameSetting);
+    }
+
+    public static void firstLoad() throws NoSuchFieldException, IllegalAccessException {
+
+        MinecraftClient client = MinecraftClient.getInstance();
+
+        String chosenName;
+
+        chosenName = "Cubzyn_net_ACC";
+
+
+        net.minecraft.client.session.Session customSession = new net.minecraft.client.session.Session(
+                chosenName,
+                UUID.randomUUID(),
+                "tokenCubzynToken00000000",
+                Optional.empty(),
+                Optional.empty(),
+                net.minecraft.client.session.Session.AccountType.LEGACY
+        );
+
+
+        VarHandle sessionHandle = MethodHandles.lookup().in(MinecraftClient.class)
+                .unreflectVarHandle(MinecraftClient.class.getDeclaredField("session"));
+
+        sessionHandle.set(client, customSession);
+
     }
 
     @Override
@@ -58,19 +84,19 @@ public class CrackedName extends Module {
 
             String chosenName;
             if (randomUsernameSetting.getValue()) {
-                chosenName = generateRandomUsername(8); // 8 lengh
+                chosenName = generateRandomUsername(5); // 8 lengh
                 usernameSetting.setValue(chosenName);
             } else {
                 chosenName = usernameSetting.getValue().trim();
                 if (chosenName.isEmpty()) {
-                    chosenName = "cracked";
+                    chosenName = "Cubzyn_net_ACC";
                 }
             }
 
             net.minecraft.client.session.Session customSession = new net.minecraft.client.session.Session(
                     chosenName,
                     UUID.randomUUID(),
-                    "token123131231231",
+                    "tokenCubzynToken00000000",
                     Optional.empty(),
                     Optional.empty(),
                     net.minecraft.client.session.Session.AccountType.LEGACY
@@ -106,7 +132,6 @@ public class CrackedName extends Module {
         }
     }
 
-    // TODO: Update username so its like lag_agj810
     private String generateRandomUsername(int length) {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder();
@@ -114,7 +139,8 @@ public class CrackedName extends Module {
         for(int i = 0; i < length; i++) {
             sb.append(chars.charAt(random.nextInt(chars.length())));
         }
-        return sb.toString();
+        String name = "Cubzyn_net_"+sb.toString();
+        return name;
     }
 
     @Getter

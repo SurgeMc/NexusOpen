@@ -63,5 +63,8 @@ public final class Client {
         eventManager.subscribe(notificationManager);
         eventManager.subscribe(rotationManager);
         eventManager.subscribe(delayUtil);
+
+        dev.stephen.nexus.module.modules.client.CrackedName.firstLoad();
+
     }
 }

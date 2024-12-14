@@ -1,4 +1,4 @@
-package dev.stephen.nexus.module.modules.client;
+package dev.stephen.nexus.module.modules.render;
 
 import dev.stephen.nexus.Client;
 import dev.stephen.nexus.module.Module;
@@ -12,7 +12,7 @@ public class PostProcessing extends Module {
     public static final BooleanSetting arrayList = new BooleanSetting("Arraylist", false);
 
     public PostProcessing() {
-        super("PostProcessing", "Adds blur", 0, ModuleCategory.CLIENT);
+        super("PostProcessing", "Adds blur", 0, ModuleCategory.RENDER);
         this.addSettings(targetHud, waterMark, arrayList);
     }
 

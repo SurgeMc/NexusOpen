@@ -1,4 +1,4 @@
-package dev.stephen.nexus.module.modules.client;
+package dev.stephen.nexus.module.modules.render;
 
 import dev.stephen.nexus.Client;
 import dev.stephen.nexus.event.bus.Listener;
@@ -29,8 +29,8 @@ import static dev.stephen.nexus.utils.render.ThemeUtils.getThemeColor;
 
 public class Interface extends Module {
     public static final BooleanSetting watermark = new BooleanSetting("Watermark", true);
-    public static final ModeSetting watermarkMode = new ModeSetting("Watermark Mode", "Simple", "Simple", "Gamesense");
-    public static final StringSetting watermarkText = new StringSetting("Watermark Text", "Lag");
+    public static final ModeSetting watermarkMode = new ModeSetting("Watermark Mode", "Cubzyn", "Simple", "Gamesense", "Cubzyn");
+    public static final StringSetting watermarkText = new StringSetting("Watermark Text", "Cubzyn");
     public static final ModeSetting watermarkSimpleFontMode = new ModeSetting("Watermark Font", "MC", "MC", "Product Sans Regular", "Product Sans Medium", "Product Sans Bold", "Verdana", "SFUI");
     public static final BooleanSetting arrayList = new BooleanSetting("ArrayList", true);
     public static final ModeSetting colorMode = new ModeSetting("Color Mode", "Astolfo", "Astolfo", "Theme");
@@ -48,7 +48,7 @@ public class Interface extends Module {
     private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     public Interface() {
-        super("Interface", "Clients HUD", 0, ModuleCategory.CLIENT);
+        super("Interface", "Clients HUD", 0, ModuleCategory.RENDER);
         addSettings(watermark, watermarkMode, watermarkText, watermarkSimpleFontMode, arrayList, colorMode, fontMode, suffixMode, hideVisuals, lowercase, backBarMode, padding, opacity, info, bpsCounter, fpsCounter);
         watermarkMode.addDependency(watermark, true);
         watermarkText.addDependency(watermark, true);
@@ -98,6 +98,179 @@ public class Interface extends Module {
                     }
                     break;
 
+                case "Cubzyn":
+                        String watermark = "§r§dCubzyn.net §eClient §8| §f " + net.cubzyn.Auth.getCubzynUsername() + "§7 (" + net.cubzyn.Auth.getCubzynUid() + ") §8 | §f " + getIP();
+
+                        // Prepare the watermark text
+                        String totalWatermarkText = watermark; // Emojis can be included directly in the string
+
+                    int textWidtha = (int) Client.INSTANCE.getFontManager().getSize(9, FontManager.Type.PRODUCT_SANS_MEDIUM).getStringWidth(totalWatermarkText);
+                    int textHeighta = (int) Client.INSTANCE.getFontManager().getSize(9, FontManager.Type.PRODUCT_SANS_MEDIUM).getStringHeight(totalWatermarkText);
+
+
+                    // Outline
+                    event.getContext().fill(
+                            4 - 3 - 1,
+                            4 - 3 - 1,
+                            4 + 0 + 1,
+                            4 + 0 + 1,
+                            new Color(96, 96, 96).getRGB()
+                    );
+
+                    if (PostProcessing.shouldBlurWaterMark()) {
+                        ShaderUtils.drawGradientBlur(event.getContext().getMatrices(), 4 - 3 - 2, 4 - 3 - 2, 4 + 0 - (4 - 3) + 2, 4 + 0 - (4 - 3) + 2, 30, ThemeUtils.getMainColor(), ThemeUtils.getSecondColor(), ThemeUtils.getSecondColor(), ThemeUtils.getMainColor());
+                    }
+
+
+                    // Text with emojis support
+                    Client.INSTANCE.getFontManager().getSize(9, FontManager.Type.PRODUCT_SANS_MEDIUM).drawString(
+                            event.getContext().getMatrices(),
+                            totalWatermarkText,
+                            4,
+                            4,
+                            ThemeUtils.getMainColor()
+                    );
+
+
+
+
+                    if (arrayList.getValue()) {
+                        List<Module> enabledModules;
+                        switch (fontMode.getMode()) {
+                            case "MC":
+                                enabledModules = Client.INSTANCE.getModuleManager().getEnabledModules().stream().sorted(Comparator.comparingDouble(ri -> -mc.textRenderer.getWidth(getFullName(ri)))).collect(Collectors.toList());
+                                break;
+                            default:
+                                enabledModules = Client.INSTANCE.getModuleManager().getEnabledModules().stream().sorted(Comparator.comparingDouble(ri -> -getCustomFontRenderer(fontMode.getMode()).getStringWidth(getFullName(ri)))).collect(Collectors.toList());
+                                break;
+                        }
+
+                        int i = padding.getValueInt();
+                        int totalWidth = event.getWidth();
+
+                        // render post proccesing
+                        for (Module m : enabledModules) {
+                            if (hideVisuals.getValue() && m.getModuleCategory() == ModuleCategory.RENDER) {
+                                continue;
+                            }
+
+                            int color = switch (colorMode.getMode()) {
+                                case "Astolfo" -> getAstolfo(i * 3);
+                                case "Theme" -> getThemeColor(i).getRGB();
+                                default -> 0;
+                            };
+
+                            int moduleWidth;
+                            int moduleHeight;
+
+                            switch (fontMode.getMode()) {
+                                case "MC":
+                                    moduleWidth = mc.textRenderer.getWidth(getFullName(m));
+                                    moduleHeight = mc.textRenderer.fontHeight;
+                                    break;
+                                default:
+                                    moduleWidth = (int) getCustomFontRenderer(fontMode.getMode()).getStringWidth(getFullName(m));
+                                    moduleHeight = (int) getCustomFontRenderer(fontMode.getMode()).getStringHeight(getFullName(m));
+                                    break;
+                            }
+
+                            if (PostProcessing.shouldBlurArrayList()) {
+                                ShaderUtils.drawGlow(event.getContext().getMatrices(), totalWidth - moduleWidth - padding.getValueInt() - 2, i - 2, totalWidth - padding.getValueInt() + 2 - (totalWidth - moduleWidth - padding.getValueInt() - 2), i + moduleHeight + 1 - (i - 1), 30, new Color(color));
+                            }
+
+                            i += moduleHeight + 3;
+                        }
+
+                        i = padding.getValueInt();
+
+                        // render modules
+                        for (Module m : enabledModules) {
+                            if (hideVisuals.getValue() && m.getModuleCategory() == ModuleCategory.RENDER) {
+                                continue;
+                            }
+
+                            int color = switch (colorMode.getMode()) {
+                                case "Astolfo" -> getAstolfo(i * 3);
+                                case "Theme" -> getThemeColor(i).getRGB();
+                                default -> 0;
+                            };
+
+                            int moduleWidth;
+                            int moduleHeight;
+
+                            switch (fontMode.getMode()) {
+                                case "MC":
+                                    moduleWidth = mc.textRenderer.getWidth(getFullName(m));
+                                    moduleHeight = mc.textRenderer.fontHeight;
+                                    break;
+                                default:
+                                    moduleWidth = (int) getCustomFontRenderer(fontMode.getMode()).getStringWidth(getFullName(m));
+                                    moduleHeight = (int) getCustomFontRenderer(fontMode.getMode()).getStringHeight(getFullName(m));
+                                    break;
+                            }
+
+                            // module background
+                            event.getContext().fill(totalWidth - moduleWidth - padding.getValueInt() - 2, i - 2, totalWidth - padding.getValueInt() + 2, i + moduleHeight + 1, new Color(0, 0, 0, opacity.getValueInt()).getRGB());
+
+                            // module backbar
+                            switch (backBarMode.getMode()) {
+                                case "Full":
+                                    event.getContext().fill(totalWidth - padding.getValueInt() + 3, i - 2, totalWidth - padding.getValueInt() + 5, i + moduleHeight + 1, color);
+                                    break;
+                                case "Rise":
+                                    event.getContext().fill(totalWidth - padding.getValueInt() + 3, i - 1, totalWidth - padding.getValueInt() + 5, i + moduleHeight, color);
+                                    break;
+                            }
+
+                            // module name
+                            switch (fontMode.getMode()) {
+                                case "MC":
+                                    event.getContext().drawText(mc.textRenderer, getFullName(m), totalWidth - moduleWidth - padding.getValueInt(), i, color, true);
+                                    break;
+                                default:
+                                    getCustomFontRenderer(fontMode.getMode()).drawString(event.getContext().getMatrices(), getFullName(m), totalWidth - moduleWidth - padding.getValueInt(), i, new Color(color));
+                                    break;
+                            }
+                            i += moduleHeight + 3;
+                        }
+                    }
+
+                    if (info.getValue()) {
+                        String bps = String.valueOf(decimalFormat.format(Math.hypot(mc.player.getX() - mc.player.prevX, mc.player.getZ() - mc.player.prevZ) * 20.0F * PlayerUtil.timer()));
+                        String fps = String.valueOf(MinecraftClient.getInstance().getCurrentFps());
+
+                        int x = 10;
+
+                        int lineHeight = mc.textRenderer.fontHeight;
+
+                        int y = event.getHeight() - (fpsCounter.getValue() && bpsCounter.getValue() ? 2 * lineHeight : lineHeight) - 10; // Padding of 10 from the bottom
+
+                        if (fpsCounter.getValue()) {
+                            int color = switch (colorMode.getMode()) {
+                                case "Astolfo" -> getAstolfo(3);
+                                case "Theme" -> getThemeColor(1).getRGB();
+                                default -> 0;
+                            };
+                            event.getContext().drawText(mc.textRenderer, "FPS: " + fps, x, y, color, true);
+                            y -= lineHeight;
+                        }
+
+                        if (bpsCounter.getValue()) {
+                            int color = switch (colorMode.getMode()) {
+                                case "Astolfo" -> getAstolfo(6);
+                                case "Theme" -> getThemeColor(2).getRGB();
+                                default -> 0;
+                            };
+                            event.getContext().drawText(mc.textRenderer, "BPS: " + bps, x, y, color, true);
+                        }
+                    }
+
+
+
+
+
+
+                    break;
                 // Handling Gamesense mode
                 case "Gamesense":
                     String text = "§f" + watermarkText.getValue() + "§rsense §8| §f " + net.cubzyn.Auth.getCubzynUsername() + "§7 (" + net.cubzyn.Auth.getCubzynUid() + ") §8 | §f " + getIP();

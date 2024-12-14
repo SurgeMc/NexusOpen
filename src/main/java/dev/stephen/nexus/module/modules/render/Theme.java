@@ -1,4 +1,4 @@
-package dev.stephen.nexus.module.modules.client;
+package dev.stephen.nexus.module.modules.render;
 
 import dev.stephen.nexus.module.Module;
 import dev.stephen.nexus.module.ModuleCategory;
@@ -15,7 +15,7 @@ public class Theme extends Module {
     public static final NumberSetting blueSecond = new NumberSetting("Blue Second", 0, 255, 255, 1);
 
     public Theme() {
-        super("Theme", "Changes the clients theme", 0, ModuleCategory.CLIENT);
+        super("Theme", "Changes the clients theme", 0, ModuleCategory.RENDER);
         this.addSettings(themeMode, redMain, greenMain, blueMain, redSecond, greenSecond, blueSecond);
         redMain.addDependency(themeMode, "Custom");
         greenMain.addDependency(themeMode, "Custom");

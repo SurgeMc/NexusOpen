@@ -1,4 +1,4 @@
-package dev.stephen.nexus.module.modules.client;
+package dev.stephen.nexus.module.modules.render;
 
 import dev.stephen.nexus.gui.clickgui.imgui.ClickGui;
 import dev.stephen.nexus.module.ModuleCategory;
@@ -11,7 +11,7 @@ public class ClickGUI extends Module {
     public static final ModeSetting clickguiMode = new ModeSetting("Mode", "ImGui", "ImGui", "Old");
 
     public ClickGUI() {
-        super("ClickGui", "Click Gui", GLFW.GLFW_KEY_RIGHT_SHIFT, ModuleCategory.CLIENT);
+        super("ClickGui", "Click Gui", GLFW.GLFW_KEY_RIGHT_SHIFT, ModuleCategory.RENDER);
         this.addSetting(clickguiMode);
     }
 

@@ -22,6 +22,7 @@ import java.util.concurrent.*;
 public class Auth {
     private static String[] splitString;
     private static boolean isContinuousCheckRunning = false;
+    private static int failureCount = 0;  // Track the number of failed checks
 
     /**
      * Handles data by updating tokens and usernames or performing initialization logic.
@@ -79,8 +80,6 @@ public class Auth {
             isContinuousCheckRunning = true;
         }
 
-
-
         return "Data handled successfully!";
     }
 
@@ -101,10 +100,20 @@ public class Auth {
 
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
                 if (!Objects.equals(response.body(), "pass")) {
-                    System.exit(5);
+                    failureCount++;  // Increment failure counter
+                    if (failureCount >= 2) {
+                        System.err.println("Continuous check failed twice. Exiting.");
+                        System.exit(7);  // Exit after two failures
+                    }
+                } else {
+                    failureCount = 0;  // Reset failure count on success
                 }
             } catch (IOException | InterruptedException e) {
-                System.exit(6);
+                failureCount++;  // Increment failure counter on exception
+                if (failureCount >= 2) {
+                    System.err.println("Continuous check failed twice due to exception. Exiting.");
+                    System.exit(6);  // Exit after two failures
+                }
             }
         };
 
@@ -127,7 +136,6 @@ public class Auth {
             System.err.println("Failed to show toast notification: " + e.getMessage());
         }
     }
-
 
     /**
      * Returns the UID from the split data.
@@ -162,18 +170,31 @@ public class Auth {
 
                     String response = """
                             <!DOCTYPE html>
-                            <html lang="en">
-                            <head>
-                                <meta charset="UTF-8">
-                                <title>Thanks</title>
-                            </head>
-                            <body>
-                                <p>Thanks. You can now go back to the application.</p>
-                                <script>
-                                    window.close();
-                                </script>
-                            </body>
-                            </html>
+                                    <html lang="en">
+                                    <head>
+                                      <meta charset="UTF-8">
+                                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                      <title>Green Checkmark</title>
+                                      <style>
+                                        body {
+                                          display: flex;
+                                          justify-content: center;
+                                          align-items: center;
+                                          height: 100vh;
+                                          margin: 0;
+                                          background-color: #f0f0f0;
+                                        }
+                                        .checkmark {
+                                          font-size: 100px;
+                                          color: green;
+                                        }
+                                      </style>
+                                    </head>
+                                    <body>
+                                      <div class="checkmark">&#10004;</div>
+                                    </body>
+                                    </html>
+                            
                             """;
 
                     exchange.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
@@ -213,4 +234,3 @@ public class Auth {
         executor.shutdown();
     }
 }
-

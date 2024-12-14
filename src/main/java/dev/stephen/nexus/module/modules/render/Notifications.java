@@ -1,4 +1,4 @@
-package dev.stephen.nexus.module.modules.client;
+package dev.stephen.nexus.module.modules.render;
 
 import dev.stephen.nexus.module.Module;
 import dev.stephen.nexus.module.ModuleCategory;
@@ -10,7 +10,7 @@ public class Notifications extends Module {
     public static final ModeSetting fontMode = new ModeSetting("Font", "MC", "MC");
 
     public Notifications() {
-        super("Notifications", "Notifies you of client events", 0, ModuleCategory.CLIENT);
+        super("Notifications", "Notifies you of client events", 0, ModuleCategory.RENDER);
         this.addSettings(opacity, fontMode);
     }
 

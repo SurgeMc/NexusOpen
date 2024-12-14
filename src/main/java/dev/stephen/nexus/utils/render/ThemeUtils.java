@@ -1,6 +1,6 @@
 package dev.stephen.nexus.utils.render;
 
-import dev.stephen.nexus.module.modules.client.Theme;
+import dev.stephen.nexus.module.modules.render.Theme;
 
 import java.awt.*;
 

@@ -1,4 +1,4 @@
-package dev.stephen.nexus.module.modules.client;
+package dev.stephen.nexus.module.modules.render;
 
 import dev.stephen.nexus.Client;
 import dev.stephen.nexus.event.bus.Listener;
@@ -31,7 +31,7 @@ public class TargetHUD extends Module {
     public static final NumberSetting opacity = new NumberSetting("BG Opacity", 0, 255, 80, 1);
 
     public TargetHUD() {
-        super("TargetHUD", "Displays information about your targets", 0, ModuleCategory.CLIENT);
+        super("TargetHUD", "Displays information about your targets", 0, ModuleCategory.RENDER);
         this.addSettings(targethudmode, deb, opacity);
     }
 
