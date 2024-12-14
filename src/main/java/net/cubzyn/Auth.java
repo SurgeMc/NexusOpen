@@ -135,13 +135,18 @@ public class Auth {
         if (splitString != null && splitString.length > 2) {
             return splitString[2];
         }
-        return null;
+        // Return "0" if the check fails
+        return "0";
     }
+
     public static String getCubzynUsername() {
-
-        return splitString[4];
-
+        if (splitString != null && splitString.length > 4) {
+            return splitString[3];
+        }
+        // Return "username" if the check fails
+        return "username";
     }
+
 
     public static void main(String[] args) {
         // Main function can be used for testing
