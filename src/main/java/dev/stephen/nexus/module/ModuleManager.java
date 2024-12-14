@@ -77,6 +77,7 @@ public final class ModuleManager {
         add(new PostProcessing());
         add(new TargetHUD());
         add(new Theme());
+        add(new RefreshClientData());
 
         // COMBAT
         add(new AntiBot());

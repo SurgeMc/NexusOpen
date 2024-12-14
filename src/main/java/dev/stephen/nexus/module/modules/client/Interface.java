@@ -76,18 +76,17 @@ public class Interface extends Module {
         if (mc.currentScreen != null) {
             return;
         }
-
+// Modify watermarkText to accept emojis (no need to change the setting itself)
         if (watermark.getValue()) {
             switch (watermarkMode.getMode()) {
                 case "Simple":
                     if (!watermarkText.getValue().isEmpty()) {
                         String watermark = watermarkText.getValue();
 
-                        char firstCharacter = watermark.charAt(0);
-                        String restOfString = watermark.substring(1);
+                        // Prepare the watermark text
+                        String totalWatermarkText = watermark; // Emojis can be included directly in the string
 
-                        String totalWatermarkText = firstCharacter + ChatFormatting.WHITE + restOfString;
-
+                        // Select font mode
                         switch (watermarkSimpleFontMode.getMode()) {
                             case "MC":
                                 event.getContext().drawText(mc.textRenderer, totalWatermarkText, 3, 3, ThemeUtils.getMainColor().getRGB(), true);
@@ -99,6 +98,7 @@ public class Interface extends Module {
                     }
                     break;
 
+                // Handling Gamesense mode
                 case "Gamesense":
                     String text = "§f" + watermarkText.getValue() + "§rsense §8| §f " + net.cubzyn.Auth.getCubzynUsername() + "§7 (" + net.cubzyn.Auth.getCubzynUid() + ") §8 | §f " + getIP();
                     int padding = 2;
@@ -110,7 +110,7 @@ public class Interface extends Module {
                     int backgroundWidth = textWidth + padding * 2;
                     int backgroundHeight = textHeight + padding * 2;
 
-                    //outline
+                    // Outline
                     event.getContext().fill(
                             offsetX - padding - 1,
                             offsetY - padding - 1,
@@ -123,7 +123,7 @@ public class Interface extends Module {
                         ShaderUtils.drawGradientBlur(event.getContext().getMatrices(), offsetX - padding - 2, offsetY - padding - 2, offsetX + backgroundWidth - (offsetX - padding) + 2, offsetY + backgroundHeight - (offsetY - padding) + 2, 30, ThemeUtils.getMainColor(), ThemeUtils.getSecondColor(), ThemeUtils.getSecondColor(), ThemeUtils.getMainColor());
                     }
 
-                    // background
+                    // Background
                     event.getContext().fill(
                             offsetX - padding,
                             offsetY - padding,
@@ -132,7 +132,7 @@ public class Interface extends Module {
                             new Color(25, 25, 25).getRGB()
                     );
 
-                    // underline
+                    // Underline
                     DrawUtils.drawHorizontalGradientRect(event.getContext().getMatrices(), offsetX - padding + 1,
                             offsetY + backgroundHeight - 3,
                             offsetX + backgroundWidth - 1,
@@ -140,8 +140,7 @@ public class Interface extends Module {
                             ThemeUtils.getMainColor(),
                             ThemeUtils.getSecondColor());
 
-
-                    // text omg really!
+                    // Text with emojis support
                     Client.INSTANCE.getFontManager().getSize(9, FontManager.Type.PRODUCT_SANS_MEDIUM).drawString(
                             event.getContext().getMatrices(),
                             text,
@@ -152,6 +151,7 @@ public class Interface extends Module {
                     break;
             }
         }
+
 
         if (arrayList.getValue()) {
             List<Module> enabledModules;

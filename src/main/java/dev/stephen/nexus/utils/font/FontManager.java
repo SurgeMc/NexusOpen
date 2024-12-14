@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-// some random library i forgot
-
 public class FontManager {
 
     private final Map<FontKey, FontRenderer> fontCache = new HashMap<>();
@@ -46,6 +44,7 @@ public class FontManager {
     public enum Type {
         PRODUCT_SANS_BOLD("product_sans_bold"),
         PRODUCT_SANS_MEDIUM("product_sans_medium"),
+        NOTO_SANS_EMOJI("NotoColorEmoji-Regular"),
         PRODUCT_SANS_REGULAR("product_sans_regular"),
         VERDANA("verdana_pro_regular"),
         SFUI("sfui_display_regular");
@@ -90,6 +89,5 @@ public class FontManager {
                     "size=" + size + ", " +
                     "type=" + type + ']';
         }
-
-        }
+    }
 }

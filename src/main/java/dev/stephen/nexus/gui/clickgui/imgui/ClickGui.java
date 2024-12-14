@@ -37,9 +37,9 @@ public class ClickGui extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         ImGuiImpl.render(io -> {
-            int windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar;
+            int windowFlags = ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse;
 
-            if (ImGui.begin("Nexus", windowFlags)) {
+            if (ImGui.begin("Cubzyn", windowFlags)) {
                 for (ModuleCategory moduleCategory1 : ModuleCategory.values()) {
                     ImGui.beginTabBar("Main");
 
