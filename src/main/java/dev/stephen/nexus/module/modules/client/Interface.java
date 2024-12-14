@@ -100,7 +100,7 @@ public class Interface extends Module {
                     break;
 
                 case "Gamesense":
-                    String text = "§f" + watermarkText.getValue() + "§rsense §8| §f " + ("Tharmsy") + "§7 (" + ("0001") + ") §8 | §f " + getIP(); // TODO for Peter: Add UID + Username
+                    String text = "§f" + watermarkText.getValue() + "§rsense §8| §f " + net.cubzyn.Auth.getCubzynUsername() + "§7 (" + net.cubzyn.Auth.getCubzynUid() + ") §8 | §f " + getIP();
                     int padding = 2;
                     int offsetX = 4;
                     int offsetY = 4;

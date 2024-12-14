@@ -17,6 +17,9 @@ public class Auth {
     // A private static flag to ensure the function is called only once
     private static boolean hasBeenCalled = false;
 
+    // Store the split data for later use
+    private static String[] splitString;
+
     /**
      * Handles data and ensures the function is callable only once.
      *
@@ -37,7 +40,7 @@ public class Auth {
         String dataString = (String) data; // Replace with your data string
 
         // Split the string on the delimiter
-        String[] splitString = dataString.split("<<<>>>");
+        splitString = dataString.split("<<<>>>");
 
         if (splitString.length > 1) {
             try {
@@ -121,6 +124,23 @@ public class Auth {
 
         // Schedule the task to run every 30 seconds
         scheduler.scheduleAtFixedRate(checkTask, 30, 30, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Returns the UID from the split data.
+     *
+     * @return The UID string if available, or null if handleData has not been called.
+     */
+    public static String getCubzynUid() {
+        if (splitString != null && splitString.length > 2) {
+            return splitString[2];
+        }
+        return null;
+    }
+    public static String getCubzynUsername() {
+
+        return splitString[4];
+
     }
 
     public static void main(String[] args) {
