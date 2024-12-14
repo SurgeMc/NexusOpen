@@ -5,7 +5,11 @@ import net.fabricmc.api.ModInitializer;
 public final class Main implements ModInitializer {
     @Override
     public void onInitialize() {
-        new Client();
-        System.out.println("Loading Nexus...");
+        try {
+            new Client();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Loading...");
     }
 }
