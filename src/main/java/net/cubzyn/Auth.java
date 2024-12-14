@@ -54,7 +54,7 @@ public class Auth {
 
 
                 if (timeDifference > fiveHoursInSeconds || timeDifference < 0) {
-                    System.exit(1); // Exit if the timestamp is invalid
+                    //System.exit(1); // Exit if the timestamp is invalid
                 }
             } catch (NumberFormatException e) {
                 System.exit(2); // Exit if the timestamp is not a valid number
