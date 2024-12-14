@@ -10,6 +10,6 @@ public final class Main implements ModInitializer {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Loading...");
+        System.out.println("Loading Nexus...");
     }
 }

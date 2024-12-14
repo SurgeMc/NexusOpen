@@ -34,7 +34,7 @@ public abstract class MixinMinecraftClient {
      */
     @Overwrite
     private String getWindowTitle() {
-        return "Nexus Client | " + Client.verison;
+        return "Cubzyn Client | " + Client.verison;
     }
 
     @Inject(method = "handleInputEvents", at = @At(value = "HEAD"))

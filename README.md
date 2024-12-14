@@ -1,7 +1,6 @@
-# NexusOpen
+# Cubzyn Client
  
-A Minecraft 1.21 Fabric Client.
+Open Source/Private Client
 
-Use JDK 21
+its a paste :(
 
-To open the source in IDEA, open build.gradle and click "Load Gradle Project" and use the "Run Client" run configuration.
