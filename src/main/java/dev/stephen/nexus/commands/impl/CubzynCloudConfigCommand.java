@@ -2,10 +2,12 @@ package dev.stephen.nexus.commands.impl;
 
 import dev.stephen.nexus.Client;
 import dev.stephen.nexus.commands.Command;
+import dev.stephen.nexus.utils.mc.ChatUtils;
+import dev.stephen.nexus.utils.mc.PlayerUtil;
 
-public class CloudConfigCommand extends Command {
-    public CloudConfigCommand() {
-        super("cloudconfig", new String[]{"<load/list>", "<configName>"});
+public class CubzynCloudConfigCommand extends Command {
+    public CubzynCloudConfigCommand() {
+        super("cubzyncloudconfig", new String[]{"<load/list>", "<configName>"});
     }
 
     @Override
@@ -21,9 +23,9 @@ public class CloudConfigCommand extends Command {
                 return;
             }
 
-            Client.INSTANCE.getConfigManager().loadCloudConfig(args[1],args[2],false);
+            Client.INSTANCE.getConfigManager().loadCloudConfig(args[1],args[2],true);
         } else if (args[0].equalsIgnoreCase("list")) {
-            sendMessage(Client.INSTANCE.getConfigManager().getCloudConfigList(false));
+            sendMessage(Client.INSTANCE.getConfigManager().getCloudConfigList(true));
         } else {
             sendMessage("Invalid Action");
         }

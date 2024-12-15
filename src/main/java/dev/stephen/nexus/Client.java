@@ -1,14 +1,4 @@
 package dev.stephen.nexus;
-import net.cubzyn.Auth;
-
-import com.sun.net.httpserver.HttpServer;
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.URI;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import dev.stephen.nexus.anticheat.AntiCheatManager;
 import dev.stephen.nexus.commands.CommandManager;
@@ -65,6 +55,8 @@ public final class Client {
         eventManager.subscribe(delayUtil);
 
         dev.stephen.nexus.module.modules.client.CrackedName.firstLoad();
+        //net.cubzyn.load;
+
 
     }
 }

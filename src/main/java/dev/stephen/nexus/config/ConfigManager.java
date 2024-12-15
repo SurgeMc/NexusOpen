@@ -29,7 +29,7 @@ public class ConfigManager {
     private final Gson gson;
 
     @Getter
-    private final File configDir = new File(MinecraftClient.getInstance().runDirectory, "Nexus" + File.separator + "configs");
+    private final File configDir = new File(MinecraftClient.getInstance().runDirectory, "Cubzyn" + File.separator + "configs");
 
     public ConfigManager() {
         if (!configDir.exists()) {
@@ -190,7 +190,7 @@ public class ConfigManager {
         }
     }
 
-    public void loadCloudConfig(String configName, String cubzyn) {
+    public void loadCloudConfig(String configName, String cubzyn, boolean usecubzyn) {
         // Set a default value if optionalArg is null or empty
         if (cubzyn == null) {
             cubzyn = String.valueOf(false);  // Default value for optional argument
@@ -201,6 +201,9 @@ public class ConfigManager {
             urlString = "https://s1.cubzyn.net/other/mc-client/configs/" + configName + ".json";
         }else{
               urlString = "https://raw.githubusercontent.com/SurgeMc/Cloud/main/configs/" + configName + ".json";
+        }
+        if(usecubzyn){
+            urlString = "https://s1.cubzyn.net/other/mc-client/configs/" + configName + ".json";
         }
 
 
@@ -293,9 +296,15 @@ public class ConfigManager {
         }
     }
 
-    public String getCloudConfigList() {
+    public String getCloudConfigList(boolean usecubzyn) {
+        String urlString;
         try {
-            URL url = new URL("https://raw.githubusercontent.com/SurgeMc/Cloud/refs/heads/main/configs.txt");
+            if(usecubzyn){
+                urlString = "https://s1.cubzyn.net/other/mc-client/configs/list";
+            }else{
+                urlString="https://raw.githubusercontent.com/SurgeMc/Cloud/refs/heads/main/configs.txt";
+            }
+            URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 

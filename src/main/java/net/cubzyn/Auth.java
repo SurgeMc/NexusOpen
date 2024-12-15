@@ -6,7 +6,25 @@ import com.sun.jna.platform.win32.COM.util.Factory;
 
 import com.sun.jna.platform.win32.COM.util.annotation.ComObject;
 import com.sun.jna.platform.win32.COM.util.annotation.ComProperty;
-
+import java.nio.file.attribute.UserPrincipalLookupService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.regex.Pattern;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -23,6 +41,12 @@ public class Auth {
     private static String[] splitString;
     private static boolean isContinuousCheckRunning = false;
     private static int failureCount = 0;  // Track the number of failed checks
+    protected ArrayList<String> list = new ArrayList<>();
+    protected HashMap<String, Integer> map = new HashMap<>();
+    protected ExecutorService protectedservice = Executors.newCachedThreadPool();
+    protected Lock lock = new ReentrantLock();
+
+
 
     /**
      * Handles data by updating tokens and usernames or performing initialization logic.

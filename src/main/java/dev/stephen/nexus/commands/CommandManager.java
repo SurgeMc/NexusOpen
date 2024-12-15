@@ -21,6 +21,7 @@ public class CommandManager {
         commands.add(new BindListCommand());
         commands.add(new BindClearCommand());
         commands.add(new CloudConfigCommand());
+        commands.add(new CubzynCloudConfigCommand());
     }
 
     public static String[] removeElement(String[] input, int indexToDelete) {
