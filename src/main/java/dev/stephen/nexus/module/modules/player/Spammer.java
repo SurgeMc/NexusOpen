@@ -2,7 +2,6 @@ package dev.stephen.nexus.module.modules.player;
 
 import dev.stephen.nexus.module.Module;
 import dev.stephen.nexus.module.ModuleCategory;
-import dev.stephen.nexus.module.setting.impl.StringSetting;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -10,7 +9,7 @@ import net.minecraft.text.Text;
 public class Spammer extends Module {
 
     private final MinecraftClient mc = MinecraftClient.getInstance();
-    public static final StringSetting message = new StringSetting("Message", "Cubzyn (dot) net - Register an account!");
+    private final String message = "Cubzyn dot net - Register an account!";
     private int delay = 20;
     private int tickCounter = 0;
 
@@ -55,7 +54,7 @@ public class Spammer extends Module {
 
     private void sendMessage() {
         if (mc.player != null && mc.getNetworkHandler() != null) {
-            mc.getNetworkHandler().sendChatMessage(String.valueOf(message));
+            mc.getNetworkHandler().sendChatMessage(message);
         }
     }
 }
