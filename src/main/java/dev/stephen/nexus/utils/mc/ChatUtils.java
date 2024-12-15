@@ -8,7 +8,7 @@ public class ChatUtils implements Utils {
 
     public static void addMessageToChat(String text) {
         Text logo = Text.literal("[")
-                .append(Text.literal("N").styled(style -> style.withColor(Formatting.RED)))
+                .append(Text.literal("C").styled(style -> style.withColor(Formatting.RED)))
                 .append(Text.literal("] "));
         Text message = Text.literal(text);
         Text combinedMessage = Text.literal("").append(logo).append(message);
@@ -17,7 +17,7 @@ public class ChatUtils implements Utils {
 
     public static void addMessageToChat(int text) {
         Text logo = Text.literal("[")
-                .append(Text.literal("N").styled(style -> style.withColor(Formatting.RED)))
+                .append(Text.literal("C").styled(style -> style.withColor(Formatting.RED)))
                 .append(Text.literal("] "));
         Text message = Text.literal(String.valueOf(text));
         Text combinedMessage = Text.literal("").append(logo).append(message);
@@ -26,7 +26,7 @@ public class ChatUtils implements Utils {
 
     public static void addMessageToChat(double text) {
         Text logo = Text.literal("[")
-                .append(Text.literal("N").styled(style -> style.withColor(Formatting.RED)))
+                .append(Text.literal("C").styled(style -> style.withColor(Formatting.RED)))
                 .append(Text.literal("] "));
         Text message = Text.literal(String.valueOf(text));
         Text combinedMessage = Text.literal("").append(logo).append(message);
@@ -35,7 +35,7 @@ public class ChatUtils implements Utils {
 
     public static void addMessageToChat(float text) {
         Text logo = Text.literal("[")
-                .append(Text.literal("N").styled(style -> style.withColor(Formatting.RED)))
+                .append(Text.literal("C").styled(style -> style.withColor(Formatting.RED)))
                 .append(Text.literal("] "));
         Text message = Text.literal(String.valueOf(text));
         Text combinedMessage = Text.literal("").append(logo).append(message);
